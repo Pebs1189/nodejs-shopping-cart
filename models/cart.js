@@ -1,4 +1,5 @@
-module.exports = function Cart(cart) {
+
+const Cart = function(cart) {
     this.items = cart.items || {};
     this.totalItems = cart.totalItems || 0;
     this.totalPrice = cart.totalPrice || 0;
@@ -28,3 +29,5 @@ module.exports = function Cart(cart) {
         return arr;
     };
 };
+
+module.exports = Cart;
