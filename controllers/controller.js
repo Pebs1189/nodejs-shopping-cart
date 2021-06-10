@@ -1,5 +1,6 @@
 const fs = require('fs');
 const { response } = require("express");
+const { validationResult } = require('express-validator');
 
 const Cart = require('../models/cart');
 const products = JSON.parse(fs.readFileSync('./data/products.json', 'utf8'));
@@ -70,6 +71,23 @@ const errorHandler = (err, req, res = response, next) => {
     res.status(err.status || 500);
     res.render('error');
 }
+
+const validarCampos = (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) return res.status(400).json(errors);
+
+    next();
+};
+
+
+const validarParamsPermitidas = (coleccion = '', colecciones = []) => {
+  const incluida = colecciones.includes(coleccion);
+  if (!incluida) {
+      throw new Error(`La colección ${coleccion} no está permitida: ${colecciones}`);
+  }
+
+  return true;
+};
 
 module.exports = {
     renderIndex,
